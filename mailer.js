@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-module.exports = (formulaire) => {
+module.exports = (formulaire, message) => {
 
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
@@ -17,7 +17,7 @@ module.exports = (formulaire) => {
         to: formulaire.attendees[0].email, // list of receivers
         subject: 'Votre rendez-vous', // Subject line
         text: '', // plain text body
-        html: '<p>Bonjour,</p> <p>Votre demande de rendez-vous a bien été enregistrée.</p>' // html body
+        html: message // html body
     };
 
     // send mail with defined transport object

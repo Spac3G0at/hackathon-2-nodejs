@@ -70,8 +70,8 @@ app.put('/api/events/:id', (req, res) => {
 			return;
 		}
 		console.log('Event updated');
-		console.log(req.body);
-		mailer(req.body);
+		const message = '<p>Votre demande rendez vous a bien été prise en compte</p>';
+		mailer(req.body, message);
 		res.sendStatus(200);
 	});
 });
@@ -91,5 +91,25 @@ app.delete('/api/events/:id', (req, res) => {
 		res.sendStatus(200);
 	});
 });
+
+app.put('/api/events/confirm/:id', (req, res) => {
+	calendar.events.update({
+		auth: oauth2Client,
+		calendarId: 'primary',
+		resource: req.body,
+		eventId: req.params.id
+	}, (err, event) => {
+		if (err) {
+			console.log('There was an error contacting the Calendar service: ' + err);
+			res.sendStatus(500);
+			return;
+		}
+		console.log('Event confirmed');
+		const message = '<p>Votre rendez vous a bien été confirmé</p>';
+		mailer(req.body, message);
+		res.sendStatus(200);
+	});
+});
+
 
 app.listen(3000, () => console.log('Running on port 3000'));
