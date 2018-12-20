@@ -3,6 +3,7 @@ const { google } = require('googleapis');
 var googleAuth = require('google-auth-library');
 const app = require('express')();
 const bodyParser = require('body-parser');
+const mailer = require('./mailer');
 
 app.use(bodyParser.json());
 
@@ -69,6 +70,8 @@ app.put('/api/events/:id', (req, res) => {
 			return;
 		}
 		console.log('Event updated');
+		console.log(req.body);
+		mailer(req.body);
 		res.sendStatus(200);
 	});
 });
