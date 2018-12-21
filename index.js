@@ -23,7 +23,7 @@ oauth2Client.setCredentials(JSON.parse(token));
 
 var calendar = google.calendar('v3');
 
-
+// Get all events
 app.get('/api/events', (req, res) => {
 	calendar.events.list({
 		auth: oauth2Client,
@@ -41,6 +41,7 @@ app.get('/api/events', (req, res) => {
 	});
 });
 
+// Create a new event
 app.post('/api/events', (req, res) => {
 	calendar.events.insert({
 		auth: oauth2Client,
@@ -57,6 +58,7 @@ app.post('/api/events', (req, res) => {
 	});
 });
 
+// Update an event
 app.put('/api/events/:id', (req, res) => {
 	calendar.events.update({
 		auth: oauth2Client,
@@ -71,11 +73,13 @@ app.put('/api/events/:id', (req, res) => {
 		}
 		console.log('Event updated');
 		const message = '<p>Votre demande rendez vous a bien été prise en compte</p>';
+		// Envoie un mail
 		mailer(req.body, message);
 		res.sendStatus(200);
 	});
 });
 
+// Delete an event
 app.delete('/api/events/:id', (req, res) => {
 	calendar.events.delete({
 		auth: oauth2Client,
@@ -92,6 +96,7 @@ app.delete('/api/events/:id', (req, res) => {
 	});
 });
 
+// Confirm an event
 app.put('/api/events/confirm/:id', (req, res) => {
 	calendar.events.update({
 		auth: oauth2Client,
@@ -106,6 +111,7 @@ app.put('/api/events/confirm/:id', (req, res) => {
 		}
 		console.log('Event confirmed');
 		const message = '<p>Votre rendez vous a bien été confirmé</p>';
+		// Envoie un mail
 		mailer(req.body, message);
 		res.sendStatus(200);
 	});
