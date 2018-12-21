@@ -58,7 +58,7 @@ app.post('/api/events', (req, res) => {
 	});
 });
 
-// Update an event
+// Update an event (pending)
 app.put('/api/events/:id', (req, res) => {
 	calendar.events.update({
 		auth: oauth2Client,
@@ -113,6 +113,24 @@ app.put('/api/events/confirm/:id', (req, res) => {
 		const message = '<p>Votre rendez vous a bien été confirmé</p>';
 		// Envoie un mail
 		mailer(req.body, message);
+		res.sendStatus(200);
+	});
+});
+
+// Update an event
+app.put('/api/events/edit/:id', (req, res) => {
+	calendar.events.update({
+		auth: oauth2Client,
+		calendarId: 'primary',
+		resource: req.body,
+		eventId: req.params.id
+	}, (err, event) => {
+		if (err) {
+			console.log('There was an error contacting the Calendar service: ' + err);
+			res.sendStatus(500);
+			return;
+		}
+		console.log('Event updated');
 		res.sendStatus(200);
 	});
 });
