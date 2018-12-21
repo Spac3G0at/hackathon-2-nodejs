@@ -25,10 +25,11 @@ var calendar = google.calendar('v3');
 
 // Get all events
 app.get('/api/events', (req, res) => {
+	const date = new Date();
 	calendar.events.list({
 		auth: oauth2Client,
 		calendarId: "hackathon3wildtours@gmail.com",
-		// timeMin: "2018-02-11T00:00:00.000Z",
+		timeMin: date.toISOString(),
 		// timeMax: "2019-01-11T23:59:59.000Z"
 	}, function (err, response) {
 		if (err) {
